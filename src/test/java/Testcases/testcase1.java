@@ -11,6 +11,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.interactions.Action;
 import org.testng.annotations.Test;
 
@@ -25,7 +27,7 @@ public class testcase1 extends baseClass {
 
 	WebDriver driver;
 	configuration c= new configuration();
-	String expected="111105";
+	
 	
 	@Test
 	public void test1() throws IOException, InterruptedException {
@@ -36,21 +38,20 @@ public class testcase1 extends baseClass {
 		h.go_to_Revenue_caluclator();
 		Thread.sleep(3000);
 		revenueCalculator rc= new revenueCalculator(driver);
-		rc.operations();
-		
-		List<WebElement> checkboxes = driver.findElements(By.xpath("//input[@type='checkbox' and contains(@class, 'PrivateSwitchBase-input css-1m9pwf3')]"));
+		rc.setslider();
+		rc.setinputvalue();
+		driver.findElement(By.xpath("(//input[@type='checkbox'])[1]")).click();
+		driver.findElement(By.xpath("(//input[@type='checkbox'])[2]")).click();
+		driver.findElement(By.xpath("(//input[@type='checkbox'])[3]")).click();
+		driver.findElement(By.xpath("(//input[@type='checkbox'])[8]")).click();
+		WebElement totalReimbursementHeader= driver.findElement(By.xpath("(//div[@class='MuiToolbar-root MuiToolbar-gutters MuiToolbar-regular css-1lnu3ao'])/p[4]/p"));
 
-       
-        for (int i = 0; i < Math.min(3, checkboxes.size()); i++) {
-            WebElement checkbox = checkboxes.get(i);
-            if (!checkbox.isSelected()) {
-                checkbox.click();
-               
-            }
-        }
-        driver.findElement(By.xpath("//span[text()='15']")).click();
-        Assert.assertEquals(expected, "111105");
-        
+		
+		assert totalReimbursementHeader.getText().equals("$75600");
+      
+		
+   
+    
 	}
 }
 	

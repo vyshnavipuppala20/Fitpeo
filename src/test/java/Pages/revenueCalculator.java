@@ -7,11 +7,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 
 
@@ -22,31 +20,31 @@ public class revenueCalculator {
 		this.driver= driver;
 		PageFactory.initElements(driver,this);
 	}
-	@FindBy(xpath="//input[@type='number' and contains(@class, 'css-1kkflqu')]")
-	WebElement textField;
 	
-	public void operations() throws InterruptedException {
+	public void setslider() throws InterruptedException {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0, 200);");
         Thread.sleep(2000);
         WebElement slider = driver.findElement(By.xpath("//input[@type='range'][@data-index='0']"));
-        int sliderWidth = slider.getSize().getWidth();
-        String maxValue = slider.getAttribute("max");
-        int max = Integer.parseInt(maxValue);
-        int desiredValue = 9400;
-        int offset = (int) ((desiredValue / (double) max) * sliderWidth);
-        Actions actions = new Actions(driver);
-        actions.clickAndHold(slider).moveByOffset(offset,0) 
-               .release() 
-               .build()
-               .perform();
+        for (int i = 0; i < 620; i++) {
+            slider.sendKeys(Keys.ARROW_RIGHT);
+        }
+        WebElement textField = driver.findElement(By.xpath("(//input[@id=':r0:'])"));
+        assert textField.getAttribute("value").equals("820");
         
-        Thread.sleep(2000);
-        
-        
-
 	}
 	
-	
+	public void setinputvalue() {
+		WebElement textField = driver.findElement(By.xpath("(//input[@id=':r0:'])"));
+		Actions actions = new Actions(driver);
+		actions.click(textField)
+		.keyDown(Keys.CONTROL)
+		.sendKeys("a")
+		.keyUp(Keys.CONTROL)
+		.sendKeys(Keys.DELETE)
+		.perform();
+		actions.sendKeys("560").perform();
+		assert textField.getAttribute("value").equals("560");
+	}
 	
 }
